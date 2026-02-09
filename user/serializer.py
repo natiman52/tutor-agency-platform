@@ -32,7 +32,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 class CustomPasswordResetSerializer(serializers.Serializer):
     phone = PhoneNumberField(region="ET")
     def save(self,*args,**kwargs):
-        user = MyUser.objects.filter(phone_number=self.cleaned_data.get("phone"))
+        user = MyUser.objects.filter(phone_number=self.validated_data.get("phone"))
         if(user.exists()):
             otp_obj,created = OTP.objects.get_or_create(user=user.first())
             print(otp_obj.code)
@@ -44,7 +44,7 @@ class CustomPasswordResetSerializer(serializers.Serializer):
 class PasswordRestTokenSeriailzer(serializers.Serializer):
     code = serializers.CharField()
     def save(self,*args,**kwargs):
-        otp_obj = OTP.objects.filter(code=self.cleaned_data.get("code"))
+        otp_obj = OTP.objects.filter(code=self.validated_data.get("code"))
         if(otp_obj.exists()):
             otp_obj,created = PasswordResetToken.objects.get_or_create(otp=otp_obj.first())
             return {"status":"success","message":"Everything works","token":otp_obj.code}

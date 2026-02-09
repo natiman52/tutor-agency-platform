@@ -28,7 +28,7 @@ class PasswordResetView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         return_status = serializer.save()
-        if(render.get("status") == "error"):
+        if(return_status.get("status") == "error"):
             return Response(
                 return_status,
                 status=401,
@@ -46,7 +46,7 @@ class PasswordResetOTPVerify(GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         return_status = serializer.save()
-        if(render.get("status") == "error"):
+        if(return_status.get("status") == "error"):
             return Response(
                 return_status,
                 status=401,
@@ -57,16 +57,17 @@ class PasswordResetOTPVerify(GenericAPIView):
                 status=200,
             )
 class ChangePasswordView(GenericAPIView):
+    serializer_class = ChangePasswordSerailzer
     def post(self,request,*args,**kwargs):
-        objs = ChangePasswordSerailzer(data=request.data)
+        objs = self.get_serializer(data=request.data)
         if(objs.is_valid()):
-            token = objs.cleaned_data.get('token')
-            password = objs.cleaned_data.get('password')
+            token = objs.validated_data.get('token')
+            password = objs.validated_data.get('password')
             token = PasswordResetToken.objects.filter(code=token)
             if(token.exists()):
                 user = token.first().otp.user
                 user.set_password(password)
-                return Response({'status':"success","message":"password has been changed changed"})
+                return Response({'status':"success","message":"password has been changed"})
             else:
                 return Response({'status':"error","message":"token does not much"})
         else:
