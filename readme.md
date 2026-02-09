@@ -1,6 +1,4 @@
-# Django API Kit
-
-## Project includes
+## Project includes (Backend)
 
 * uses python 3.12
 * setted up Corsheaders (don't forget to remove it in production)
@@ -24,7 +22,3 @@
 * STATIC_ROOT=""
 * MEDIA_ROOT=""
 
-## Hope to add more things later on like
-* cron jobs
-* JWT or someform of token based authentication
-* etc
