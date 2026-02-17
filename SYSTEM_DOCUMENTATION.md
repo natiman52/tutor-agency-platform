@@ -70,5 +70,15 @@ Dedicated endpoints for administrators (superusers) to manage platform integrity
 
 ---
 
+## 🧹 Automated Maintenance
+The system uses `django-crontab` for periodic tasks.
+- **Cleanup Tokens**: Every 30 minutes, the `cleanup_tokens` management command runs to delete expired OTPs and Password Reset Tokens.
+- **Management**:
+    - `python manage.py crontab add` -> Install scheduled jobs to system crontab.
+    - `python manage.py crontab show` -> View scheduled jobs.
+    - `python manage.py crontab remove` -> Remove jobs.
+
+---
+
 ## ⚙️ Configuration
 The system relies on `CHAPA_SECRET_KEY` in the environment and standard media storage for ID photos and qualification documents.

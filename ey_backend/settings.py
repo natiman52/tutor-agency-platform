@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     ## native apps
     "user",
     "core",
-    "manager"
+    "manager",
+    "django_crontab",
 ]
 
 MIDDLEWARE = [
@@ -242,4 +243,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CHAPA SETTINGS
 CHAPA_SECRET_KEY = os.getenv("CHAPA_SECRET_KEY")
 
-# LOGGING CONFIG
+
+# CRONJOBS
+CRONJOBS = [
+    ('*/30 * * * *', 'django.core.management.call_command', ['cleanup_tokens']),
+]
