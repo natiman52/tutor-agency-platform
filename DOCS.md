@@ -81,3 +81,25 @@ Base prefix for these examples: `/api/auth/`
 
 - **Refresh token** (included at `api/auth/token/refresh/`)
     - `POST api/auth/token/refresh/` - sends new access token when you give it a refresh token
+
+
+
+## 📊 Data Models
+
+### `Gig`
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `tutor` | `FK` | The tutor profile being hired | -> uses tutor profile to get portfolio
+| `status` | `Enum` | Current state of the job |
+| `price` | `Decimal` | Total agreed cost |
+| `description` | `Text` | Description of the gig |
+| `subject` | `Choice` | Subject of the gig |
+
+### `Wallet`
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user` | `FK` | Owner of the wallet |
+| `balance` | `Decimal` | Available funds |
+| `locked` | `Decimal` | Funds currently in escrow for active gigs |
+
+---

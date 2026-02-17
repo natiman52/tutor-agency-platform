@@ -55,7 +55,9 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'allauth.socialaccount.providers.google',
     ## native apps
-    "user"
+    "user",
+    "core",
+    "manager"
 ]
 
 MIDDLEWARE = [
@@ -236,5 +238,8 @@ MEDIA_URL = "media/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CHAPA SETTINGS
+CHAPA_SECRET_KEY = os.getenv("CHAPA_SECRET_KEY")
 
 # LOGGING CONFIG
