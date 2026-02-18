@@ -2,24 +2,29 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Role } from '../../types';
+import { registerRequest } from "../../features/auth/api";
 
 const RegisterPage: React.FC = () => {
   const [role, setRole] = useState<Role>(Role.Parent);
   const navigate = useNavigate();
 
-  const handleRegister = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real app, this would submit the form.
-    // For now, it navigates to the appropriate next step.
-    if (role === Role.Tutor) {
-      navigate('/tutor/register');
-    } else {
-      // For parents, we can log them in and send to dashboard
-      // Or send them to a profile setup page.
-      // For simplicity, we navigate to login.
-      navigate('/login');
-    }
-  };
+  const handleRegister = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    await registerRequest({
+      role,
+      name: (e.target as any).name.value,
+      email: (e.target as any).email.value,
+      password: (e.target as any).password.value,
+    });
+
+    navigate('/login');
+
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

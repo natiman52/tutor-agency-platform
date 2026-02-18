@@ -1,38 +1,45 @@
 
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../App';
 import { Role, User } from '../../types';
+import { useLogin } from "../../features/auth/hooks";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
 
-  const handleLogin = (e: React.FormEvent, role: Role) => {
-    e.preventDefault();
-    if (email && password) {
-      // Mock login logic
-      const mockUser: User = {
-        id: 'user-' + Math.random(),
-        name: email.split('@')[0],
-        email: email,
-        role: role,
-      };
-      login(mockUser);
-      
-      switch(role) {
-        case Role.Parent: navigate('/parent/dashboard'); break;
-        case Role.Tutor: navigate('/tutor/dashboard'); break;
-        case Role.Admin: navigate('/admin/dashboard'); break;
-        default: navigate('/');
-      }
-    } else {
-      setError('Please enter email and password.');
+  const loginMutation = useLogin();
+
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!email || !password) {
+    setError("Please enter email and password.");
+    return;
+  }
+
+  try {
+    const res = await loginMutation.mutateAsync({
+      email,
+      password,
+    });
+
+    const role = res.data.user.role; // assuming backend returns role
+
+    switch(role) {
+      case Role.Parent: navigate('/parent/dashboard'); break;
+      case Role.Tutor: navigate('/tutor/dashboard'); break;
+      case Role.Admin: navigate('/admin/dashboard'); break;
+      default: navigate('/');
     }
-  };
+
+  } catch {
+    setError("Login failed.");
+  }
+};
+  
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -99,7 +106,7 @@ const LoginPage: React.FC = () => {
             <div>
               <button
                 type="submit"
-                onClick={(e) => handleLogin(e, Role.Parent)}
+                onClick={handleLogin}
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 Sign in as Parent
@@ -108,14 +115,14 @@ const LoginPage: React.FC = () => {
             <div className="flex gap-2">
               <button
                 type="submit"
-                onClick={(e) => handleLogin(e, Role.Tutor)}
+                onClick={handleLogin}
                 className="w-full flex justify-center py-2 px-4 border border-primary text-primary rounded-md shadow-sm text-sm font-medium hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 Tutor
               </button>
                <button
                 type="submit"
-                onClick={(e) => handleLogin(e, Role.Admin)}
+                onClick={handleLogin}
                 className="w-full flex justify-center py-2 px-4 border border-neutral-600 text-neutral-600 rounded-md shadow-sm text-sm font-medium hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500"
               >
                 Admin
