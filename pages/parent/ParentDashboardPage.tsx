@@ -1,14 +1,14 @@
 
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../App';
+import { useAuthStore } from '@/store/authStore';
 import Header from '../../components/ui/Header';
 import Footer from '../../components/ui/Footer';
 import TutorCard from '../../components/cards/TutorCard';
 import { TUTORS } from '../../constants';
 
 const ParentDashboardPage: React.FC = () => {
-  const { user } = useContext(AuthContext);
+   const user = useAuthStore(state => state.user);
 
   const aiMatches = TUTORS.slice(0, 3);
   const otherTutors = TUTORS.slice(3);

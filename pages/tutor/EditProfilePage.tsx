@@ -3,11 +3,11 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/ui/Header';
 import Footer from '../../components/ui/Footer';
-import { AuthContext } from '../../App';
+import { useAuthStore } from '@/store/authStore';
 import { TUTORS } from '../../constants';
 
 const EditTutorProfilePage: React.FC = () => {
-    const { user } = useContext(AuthContext);
+     const user = useAuthStore(state => state.user);
     const navigate = useNavigate();
     
     // Find the current tutor's data to pre-fill the form

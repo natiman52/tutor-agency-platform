@@ -3,11 +3,11 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../../components/ui/Header';
 import Footer from '../../components/ui/Footer';
-import { AuthContext } from '../../App';
+import { useAuthStore } from '@/store/authStore';
 import { TutorStatus } from '../../types';
 
 const TutorDashboardPage: React.FC = () => {
-    const { user } = useContext(AuthContext);
+    const user = useAuthStore(state => state.user);
 
     // Mock data for demonstration
     const tutorStatus = TutorStatus.Verified; 

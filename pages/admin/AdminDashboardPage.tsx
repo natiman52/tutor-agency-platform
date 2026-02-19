@@ -2,12 +2,12 @@
 import React, { useContext } from 'react';
 import Header from '../../components/ui/Header';
 import Footer from '../../components/ui/Footer';
-import { AuthContext } from '../../App';
+import { useAuthStore } from '@/store/authStore';
 import { COMMISSIONS, TUTORS } from '../../constants';
 import { TutorStatus } from '../../types';
 
 const AdminDashboardPage: React.FC = () => {
-  const { user } = useContext(AuthContext);
+  const user = useAuthStore(state => state.user);
 
   const pendingTutors = TUTORS.filter(t => t.status === TutorStatus.Pending);
 

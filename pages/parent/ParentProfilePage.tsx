@@ -1,12 +1,12 @@
 
 import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../App';
+import { useAuthStore } from '@/store/authStore';
 import Header from '../../components/ui/Header';
 import Footer from '../../components/ui/Footer';
 import { GRADE_LEVELS } from '../../constants';
 
 const ParentProfilePage: React.FC = () => {
-    const { user } = useContext(AuthContext);
+    const user = useAuthStore(state => state.user);
     const [isEditing, setIsEditing] = useState(false);
     
     // Mock parent data
@@ -58,19 +58,53 @@ const ParentProfilePage: React.FC = () => {
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-neutral-500">Full Name</label>
-                                <input type="text" name="name" value={parentData.name} onChange={handleInputChange} readOnly={!isEditing} className={`mt-1 w-full p-2 border rounded-md ${!isEditing ? 'bg-neutral-100 border-neutral-200' : 'border-neutral-300'}`} />
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={parentData.name}
+                                    onChange={handleInputChange}
+                                    readOnly={!isEditing}
+                                    className={`mt-1 w-full p-2 border rounded-md ${!isEditing ? 'bg-neutral-100 border-neutral-200' : 'border-neutral-300'}`}
+                                    placeholder="Enter full name"
+                                    title="Full Name"
+                                />
                             </div>
                              <div>
                                 <label className="block text-sm font-medium text-neutral-500">Phone Number</label>
-                                <input type="tel" name="phone" value={parentData.phone} onChange={handleInputChange} readOnly={!isEditing} className={`mt-1 w-full p-2 border rounded-md ${!isEditing ? 'bg-neutral-100 border-neutral-200' : 'border-neutral-300'}`} />
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    value={parentData.phone}
+                                    onChange={handleInputChange}
+                                    readOnly={!isEditing}
+                                    className={`mt-1 w-full p-2 border rounded-md ${!isEditing ? 'bg-neutral-100 border-neutral-200' : 'border-neutral-300'}`}
+                                    placeholder="Enter phone number"
+                                    title="Phone Number"
+                                />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-neutral-500">Primary Location</label>
-                                <input type="text" name="location" value={parentData.location} onChange={handleInputChange} readOnly={!isEditing} className={`mt-1 w-full p-2 border rounded-md ${!isEditing ? 'bg-neutral-100 border-neutral-200' : 'border-neutral-300'}`} />
+                                <input
+                                    type="text"
+                                    name="location"
+                                    value={parentData.location}
+                                    onChange={handleInputChange}
+                                    readOnly={!isEditing}
+                                    className={`mt-1 w-full p-2 border rounded-md ${!isEditing ? 'bg-neutral-100 border-neutral-200' : 'border-neutral-300'}`}
+                                    placeholder="Enter primary location"
+                                    title="Primary Location"
+                                />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-neutral-500">Student's Grade Level</label>
-                                 <select name="studentGradeLevel" value={parentData.studentGradeLevel} onChange={handleInputChange} disabled={!isEditing} className={`mt-1 w-full p-2 border rounded-md ${!isEditing ? 'bg-neutral-100 border-neutral-200 appearance-none' : 'border-neutral-300'}`}>
+                                 <select
+                                    name="studentGradeLevel"
+                                    value={parentData.studentGradeLevel}
+                                    onChange={handleInputChange}
+                                    disabled={!isEditing}
+                                    className={`mt-1 w-full p-2 border rounded-md ${!isEditing ? 'bg-neutral-100 border-neutral-200 appearance-none' : 'border-neutral-300'}`}
+                                    title="Student's Grade Level"
+                                 >
                                     {GRADE_LEVELS.map(g => <option key={g}>{g}</option>)}
                                  </select>
                             </div>
