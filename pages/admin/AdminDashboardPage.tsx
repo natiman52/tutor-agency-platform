@@ -4,7 +4,9 @@ import Header from '../../components/ui/Header';
 import Footer from '../../components/ui/Footer';
 import { useAuthStore } from '@/store/authStore';
 import { COMMISSIONS, TUTORS } from '../../constants';
-import { TutorStatus } from '../../types';
+import { TutorStatus, Role } from '../../types';
+import { AuthGuard } from '../../features/auth/AuthGuard';
+import { RoleGuard } from '../../features/auth/RoleGuard';
 
 const AdminDashboardPage: React.FC = () => {
   const user = useAuthStore(state => state.user);
@@ -67,33 +69,33 @@ const AdminDashboardPage: React.FC = () => {
                 </table>
               </div>
             </section>
-            
+
             {/* Tutor Verification Queue */}
             <section>
               <h2 className="text-xl font-bold mb-4">Tutor Verification Queue</h2>
               <div className="bg-white rounded-lg shadow-sm p-4">
                 {pendingTutors.length > 0 ? (
-                    <p>{pendingTutors.length} tutors waiting for approval.</p>
+                  <p>{pendingTutors.length} tutors waiting for approval.</p>
                 ) : (
-                    <p className="text-neutral-500">No tutors are currently pending verification. Great job!</p>
+                  <p className="text-neutral-500">No tutors are currently pending verification. Great job!</p>
                 )}
               </div>
             </section>
           </div>
-          
+
           {/* Sidebar: Top Tutors */}
           <aside>
             <h2 className="text-xl font-bold mb-4">Top Performing Tutors</h2>
             <div className="bg-white rounded-lg shadow-sm p-4 space-y-4">
-                {TUTORS.slice(0, 4).sort((a,b) => b.rating - a.rating).map(tutor => (
-                    <div key={tutor.id} className="flex items-center space-x-3">
-                        <img className="w-10 h-10 rounded-full" src={tutor.avatarUrl} alt={tutor.name} />
-                        <div>
-                            <p className="font-semibold text-sm">{tutor.name}</p>
-                            <p className="text-xs text-neutral-500">Rating: {tutor.rating}</p>
-                        </div>
-                    </div>
-                ))}
+              {TUTORS.slice(0, 4).sort((a, b) => b.rating - a.rating).map(tutor => (
+                <div key={tutor.id} className="flex items-center space-x-3">
+                  <img className="w-10 h-10 rounded-full" src={tutor.avatarUrl} alt={tutor.name} />
+                  <div>
+                    <p className="font-semibold text-sm">{tutor.name}</p>
+                    <p className="text-xs text-neutral-500">Rating: {tutor.rating}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </aside>
         </div>
@@ -103,4 +105,10 @@ const AdminDashboardPage: React.FC = () => {
   );
 };
 
-export default AdminDashboardPage;
+export default () => (
+  <AuthGuard>
+    <RoleGuard role={Role.Admin}>
+      <AdminDashboardPage />
+    </RoleGuard>
+  </AuthGuard>
+);
