@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Role } from '../../types';
-import { useLogin } from "../../features/auth/hooks";
+import { useLogin, useResendOtp } from "../../features/auth/hooks";
 import { getErrorMessage } from '../../lib/utils/errorUtils';
 
 const LoginPage: React.FC = () => {
@@ -9,7 +9,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
+  const { mutate } = useResendOtp()
   const loginMutation = useLogin();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -26,6 +26,7 @@ const LoginPage: React.FC = () => {
       const user = res.data.user;
 
       if (!user.is_phone_verified) {
+        mutate()
         navigate('/verify-phone');
         return;
       }
